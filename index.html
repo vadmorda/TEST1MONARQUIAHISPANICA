@@ -11,34 +11,34 @@
     <section id="home" class="card">
       <div class="eyebrow">2º ESO · Geografía e Historia</div>
       <h1>Monarquía Hispánica</h1>
-      <p class="lead">Carlos I, Felipe II, política exterior, conflictos, gobierno del Imperio y memoria histórica activa.</p>
+      <p class="lead">Carlos I, Felipe II y la política interior: revueltas, centralización y religión.</p>
 
       <div class="mode-grid">
-        <button class="mode-card" data-mode="full">
+        <button class="mode-card" data-mode="full" type="button">
           <span class="mode-icon">📚</span>
           <strong>Práctica completa</strong>
-          <small>Recorrido amplio con preguntas variadas.</small>
+          <small>Todas las preguntas.</small>
         </button>
-        <button class="mode-card" data-mode="review">
+        <button class="mode-card" data-mode="review" type="button">
           <span class="mode-icon">🧠</span>
           <strong>Repaso inteligente</strong>
           <small>Repite solo los fallos guardados.</small>
         </button>
-        <button class="mode-card" data-mode="quick">
+        <button class="mode-card" data-mode="quick" type="button">
           <span class="mode-icon">⚡</span>
           <strong>Reto rápido</strong>
-          <small>5 preguntas al azar para activar memoria.</small>
+          <small>5 preguntas al azar.</small>
         </button>
       </div>
 
       <div class="teacher-note">
-        <strong>Consejo:</strong> el modo completo sirve para aprender; el repaso inteligente consolida; el reto rápido funciona como calentamiento o cierre.
+        <strong>Consejo:</strong> haz primero la práctica completa. Después usa el repaso inteligente para consolidar los errores.
       </div>
     </section>
 
     <section id="quiz" class="card hidden">
       <div class="topbar">
-        <button id="btn-home" class="btn ghost">← Menú</button>
+        <button id="btn-home" class="btn ghost" type="button">← Menú</button>
         <div id="mode-label" class="pill"></div>
       </div>
 
@@ -50,8 +50,8 @@
       <div id="question-container"></div>
 
       <div class="nav-row">
-        <button id="btn-prev" class="btn ghost">◀ Anterior</button>
-        <button id="btn-next" class="btn primary">Siguiente ▶</button>
+        <button id="btn-prev" class="btn ghost" type="button">◀ Anterior</button>
+        <button id="btn-next" class="btn primary" type="button">Siguiente ▶</button>
       </div>
     </section>
 
@@ -60,6 +60,6 @@
     </section>
   </main>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
