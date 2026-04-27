@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monarquía Hispánica · Práctica interactiva</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section id="home" class="card">
+      <div class="eyebrow">2º ESO · Geografía e Historia</div>
+      <h1>Monarquía Hispánica</h1>
+      <p class="lead">Carlos I, Felipe II, política exterior, conflictos, gobierno del Imperio y memoria histórica activa.</p>
+
+      <div class="mode-grid">
+        <button class="mode-card" data-mode="full">
+          <span class="mode-icon">📚</span>
+          <strong>Práctica completa</strong>
+          <small>Recorrido amplio con preguntas variadas.</small>
+        </button>
+        <button class="mode-card" data-mode="review">
+          <span class="mode-icon">🧠</span>
+          <strong>Repaso inteligente</strong>
+          <small>Repite solo los fallos guardados.</small>
+        </button>
+        <button class="mode-card" data-mode="quick">
+          <span class="mode-icon">⚡</span>
+          <strong>Reto rápido</strong>
+          <small>5 preguntas al azar para activar memoria.</small>
+        </button>
+      </div>
+
+      <div class="teacher-note">
+        <strong>Consejo:</strong> el modo completo sirve para aprender; el repaso inteligente consolida; el reto rápido funciona como calentamiento o cierre.
+      </div>
+    </section>
+
+    <section id="quiz" class="card hidden">
+      <div class="topbar">
+        <button id="btn-home" class="btn ghost">← Menú</button>
+        <div id="mode-label" class="pill"></div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bg"><div id="progress-bar" class="progress-fill"></div></div>
+        <div id="progress-label" class="progress-label"></div>
+      </div>
+
+      <div id="question-container"></div>
+
+      <div class="nav-row">
+        <button id="btn-prev" class="btn ghost">◀ Anterior</button>
+        <button id="btn-next" class="btn primary">Siguiente ▶</button>
+      </div>
+    </section>
+
+    <section id="results" class="card hidden">
+      <div id="result-content"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
