@@ -329,8 +329,242 @@ const preguntasOriginales = [
   }
 
 ];
+const $ = (id) => document.getElementById(id);
+  const home = $('home');
+  const quiz = $('quiz');
+  const results = $('results');
+  const questionContainer = $('question-container');
+  const modeLabel = $('mode-label');
+  const progressBar = $('progress-bar');
+  const progressLabel = $('progress-label');
+  const btnHome = $('btn-home');
+  const btnPrev = $('btn-prev');
+  const btnNext = $('btn-next');
 
-// app.js — Monarquía Hispánica · 2º ESO
-// Funciona con index.html incluido en este paquete.
+  let preguntas = [];
+  let indice = 0;
+  let respuestasUsuario = [];
+  let fallosUltimoIntento = JSON.parse(localStorage.getItem('fallosMonarquiaHispanica') || '[]');
+  let modoActual = 'full';
 
-document.addEventListener('DOMContentLoaded', () => {
+  function normalizar(texto) {
+    return String(texto)
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s]/g, '')
+      .trim()
+      .replace(/\s+/g, ' ');
+  }
+
+  function barajar(array) {
+    const copia = [...array];
+    for (let i = copia.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copia[i], copia[j]] = [copia[j], copia[i]];
+    }
+    return copia;
+  }
+
+  function show(section) {
+    home.classList.add('hidden');
+    quiz.classList.add('hidden');
+    results.classList.add('hidden');
+    section.classList.remove('hidden');
+  }
+
+  function iniciarModo(modo) {
+    modoActual = modo;
+
+    if (modo === 'full') {
+      preguntas = [...preguntasOriginales];
+      modeLabel.textContent = 'Práctica completa';
+    }
+
+    if (modo === 'quick') {
+      preguntas = barajar(preguntasOriginales).slice(0, 5);
+      modeLabel.textContent = 'Reto rápido · 5 preguntas';
+    }
+
+    if (modo === 'review') {
+      const indices = JSON.parse(localStorage.getItem('fallosMonarquiaHispanica') || '[]');
+      if (!indices.length) {
+        alert('Todavía no hay fallos guardados. Haz primero la práctica completa o el reto rápido.');
+        return;
+      }
+      preguntas = indices.map(i => preguntasOriginales[i]).filter(Boolean);
+      modeLabel.textContent = 'Repaso inteligente · fallos';
+    }
+
+    indice = 0;
+    respuestasUsuario = new Array(preguntas.length).fill(null);
+    show(quiz);
+    renderPregunta();
+  }
+
+  function renderPregunta() {
+    const q = preguntas[indice];
+    const pct = ((indice + 1) / preguntas.length) * 100;
+    progressBar.style.width = `${pct}%`;
+    progressLabel.textContent = `Pregunta ${indice + 1} de ${preguntas.length}`;
+
+    let html = `
+      <div class="question-text">
+        <h2>${q.es}</h2>
+        <p class="hint">${q.hint || ''}</p>
+      </div>
+    `;
+
+    if (q.img) {
+      html += `
+        <div class="q-image">
+          <img src="${q.img.src}" alt="Imagen histórica de apoyo" onerror="this.style.display='none'">
+          <div class="q-credit">${q.img.credit} · <a href="${q.img.link}" target="_blank" rel="noopener">Fuente</a></div>
+        </div>
+      `;
+    }
+
+    if (q.tipo === 'multi') {
+      html += '<div class="options">';
+      q.opciones.forEach((op, i) => {
+        const selected = respuestasUsuario[indice] === i ? 'selected' : '';
+        html += `<button type="button" class="option ${selected}" data-answer="${i}">${op}</button>`;
+      });
+      html += '</div>';
+    }
+
+    if (q.tipo === 'corta') {
+      const valor = respuestasUsuario[indice] || '';
+      html += `<input id="respuesta-corta" class="short-answer" type="text" value="${valor}" placeholder="Escribe una respuesta breve">`;
+    }
+
+    questionContainer.innerHTML = html;
+
+    questionContainer.querySelectorAll('.option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        respuestasUsuario[indice] = Number(btn.dataset.answer);
+        renderPregunta();
+      });
+    });
+
+    btnPrev.disabled = indice === 0;
+    btnNext.textContent = indice === preguntas.length - 1 ? 'Terminar' : 'Siguiente ▶';
+  }
+
+  function guardarCorta() {
+    const input = $('respuesta-corta');
+    if (input) respuestasUsuario[indice] = input.value.trim();
+  }
+
+  function respuestaVacia(valor) {
+    return valor === null || valor === undefined || valor === '';
+  }
+
+  function esCorrecta(q, respuesta) {
+    if (q.tipo === 'multi') return respuesta === q.correcta;
+    if (q.tipo === 'corta') return q.respuestas.map(normalizar).includes(normalizar(respuesta));
+    return false;
+  }
+
+  function textoCorrecto(q) {
+    if (q.tipo === 'multi') return q.opciones[q.correcta];
+    if (q.tipo === 'corta') return q.respuestas[0];
+    return '';
+  }
+
+  function textoUsuario(q, respuesta) {
+    if (respuestaVacia(respuesta)) return 'Sin responder';
+    if (q.tipo === 'multi') return q.opciones[respuesta] || 'Sin responder';
+    return respuesta;
+  }
+
+  function siguiente() {
+    guardarCorta();
+    if (respuestaVacia(respuestasUsuario[indice])) {
+      alert('Responde antes de continuar 🙂');
+      return;
+    }
+
+    if (indice === preguntas.length - 1) {
+      mostrarResultados();
+      return;
+    }
+    indice++;
+    renderPregunta();
+  }
+
+  function anterior() {
+    guardarCorta();
+    if (indice > 0) {
+      indice--;
+      renderPregunta();
+    }
+  }
+
+  function mostrarResultados() {
+    guardarCorta();
+    let aciertos = 0;
+    const fallos = [];
+    const fallosIndicesOriginales = [];
+
+    preguntas.forEach((q, i) => {
+      if (esCorrecta(q, respuestasUsuario[i])) {
+        aciertos++;
+      } else {
+        fallos.push({ q, respuesta: respuestasUsuario[i] });
+        const idxOriginal = preguntasOriginales.indexOf(q);
+        if (idxOriginal >= 0) fallosIndicesOriginales.push(idxOriginal);
+      }
+    });
+
+    localStorage.setItem('fallosMonarquiaHispanica', JSON.stringify(fallosIndicesOriginales));
+
+    const nota = Math.round((aciertos / preguntas.length) * 100);
+    let html = `
+      <h2>Resultados</h2>
+      <div class="score">${aciertos}/${preguntas.length} · ${nota}%</div>
+      <p>Revisa los fallos: ahí es donde más se aprende.</p>
+      <div class="result-actions">
+        <button id="again-same" class="btn primary">Repetir este modo</button>
+        <button id="review-fails" class="btn ghost">Repasar fallos</button>
+        <button id="back-menu" class="btn ghost">Volver al menú</button>
+      </div>
+    `;
+
+    if (!fallos.length) {
+      html += '<p class="perfect">🎉 ¡Perfecto! Has acertado todas.</p>';
+    } else {
+      html += '<div class="fallos-lista">';
+      fallos.forEach(({ q, respuesta }) => {
+        html += `
+          <div class="fallo">
+            <strong>${q.es}</strong>
+            <p>Tu respuesta: <b>${textoUsuario(q, respuesta)}</b></p>
+            <p>Correcta: <b>${textoCorrecto(q)}</b></p>
+            <p>${q.explicacion}</p>
+          </div>
+        `;
+      });
+      html += '</div>';
+    }
+
+    $('result-content').innerHTML = html;
+    show(results);
+
+    $('again-same').addEventListener('click', () => iniciarModo(modoActual));
+    $('review-fails').addEventListener('click', () => iniciarModo('review'));
+    $('back-menu').addEventListener('click', () => show(home));
+  }
+
+  document.querySelectorAll('.mode-card').forEach(btn => {
+    btn.addEventListener('click', () => iniciarModo(btn.dataset.mode));
+  });
+
+  btnHome.addEventListener('click', () => show(home));
+  btnNext.addEventListener('click', siguiente);
+  btnPrev.addEventListener('click', anterior);
+
+  show(home);
+});
+
+
