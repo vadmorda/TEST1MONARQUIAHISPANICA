@@ -1,65 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Monarquía Hispánica · Práctica interactiva</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <main class="shell">
-    <section id="home" class="card">
-      <div class="eyebrow">2º ESO · Geografía e Historia</div>
-      <h1>Monarquía Hispánica</h1>
-      <p class="lead">Carlos I, Felipe II y la política interior: revueltas, centralización y religión.</p>
-
-      <div class="mode-grid">
-        <button class="mode-card" data-mode="full" type="button">
-          <span class="mode-icon">📚</span>
-          <strong>Práctica completa</strong>
-          <small>Todas las preguntas.</small>
-        </button>
-        <button class="mode-card" data-mode="review" type="button">
-          <span class="mode-icon">🧠</span>
-          <strong>Repaso inteligente</strong>
-          <small>Repite solo los fallos guardados.</small>
-        </button>
-        <button class="mode-card" data-mode="quick" type="button">
-          <span class="mode-icon">⚡</span>
-          <strong>Reto rápido</strong>
-          <small>5 preguntas al azar.</small>
-        </button>
-      </div>
-
-      <div class="teacher-note">
-        <strong>Consejo:</strong> haz primero la práctica completa. Después usa el repaso inteligente para consolidar los errores.
-      </div>
-    </section>
-
-    <section id="quiz" class="card hidden">
-      <div class="topbar">
-        <button id="btn-home" class="btn ghost" type="button">← Menú</button>
-        <div id="mode-label" class="pill"></div>
-      </div>
-
-      <div class="progress-wrap">
-        <div class="progress-bg"><div id="progress-bar" class="progress-fill"></div></div>
-        <div id="progress-label" class="progress-label"></div>
-      </div>
-
-      <div id="question-container"></div>
-
-      <div class="nav-row">
-        <button id="btn-prev" class="btn ghost" type="button">◀ Anterior</button>
-        <button id="btn-next" class="btn primary" type="button">Siguiente ▶</button>
-      </div>
-    </section>
-
-    <section id="results" class="card hidden">
-      <div id="result-content"></div>
-    </section>
-  </main>
-
-  <script src="app.js" defer></script>
-</body>
-</html>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(249,115,22,.48), transparent 42%),
+    radial-gradient(circle at 100% 20%, rgba(245,158,11,.38), transparent 40%),
+    #0f172a;
+  color:#f8fafc;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.shell{width:100%;max-width:900px}
+.card{
+  background:rgba(15,23,42,.9);
+  border:1px solid rgba(148,163,184,.35);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:0 24px 70px rgba(0,0,0,.45);
+}
+.hidden{display:none!important}
+.eyebrow,.progress-label,.hint,.lead,.teacher-note small{color:#cbd5e1}
+h1{margin:6px 0 8px;text-align:center;font-size:2rem}
+.lead{text-align:center;margin:0 auto 20px;max-width:680px;line-height:1.5}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.mode-card{
+  text-align:left;
+  min-height:150px;
+  border:1px solid rgba(148,163,184,.35);
+  background:linear-gradient(145deg,rgba(30,41,59,.95),rgba(15,23,42,.95));
+  color:#f8fafc;
+  border-radius:20px;
+  padding:16px;
+  cursor:pointer;
+  transition:.15s ease;
+}
+.mode-card:hover{transform:translateY(-2px);border-color:#fb923c;box-shadow:0 16px 34px rgba(249,115,22,.18)}
+.mode-icon{display:block;font-size:2rem;margin-bottom:8px}
+.mode-card strong{display:block;font-size:1.02rem;margin-bottom:5px}
+.mode-card small{display:block;color:#cbd5e1;line-height:1.35}
+.teacher-note{margin-top:12px;padding:12px;border-radius:16px;background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.25)}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+.pill{border:1px solid rgba(148,163,184,.45);background:rgba(30,41,59,.75);border-radius:999px;padding:8px 12px;color:#fed7aa;font-weight:800}
+.progress-wrap{margin-bottom:16px}.progress-bg{height:10px;border-radius:999px;background:#020617;overflow:hidden;border:1px solid rgba(148,163,184,.35)}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#fb923c,#f97316,#f59e0b);transition:width .2s ease}.progress-label{text-align:right;margin-top:5px;font-size:.85rem}
+.question-text h2{margin:8px 0 4px;font-size:1.35rem}.hint{margin:0 0 12px}
+.q-image{margin:12px 0 16px;border-radius:18px;overflow:hidden;border:1px solid rgba(148,163,184,.35);background:#020617}.q-image img{display:block;width:100%;max-height:320px;object-fit:cover}.q-credit{padding:8px 10px;color:#94a3b8;font-size:.78rem}.q-credit a{color:#fdba74}
+.options{display:grid;gap:10px}.option{
+  width:100%;text-align:left;border:1px solid rgba(148,163,184,.45);background:#1e293b;color:#f8fafc;border-radius:16px;padding:13px;cursor:pointer;font-size:1rem;transition:.12s ease
+}.option:hover{background:#334155;border-color:#fb923c}.option.selected{background:#fb923c;color:#0f172a;font-weight:900;border-color:#fdba74}
+.short-answer{width:100%;padding:13px;border-radius:16px;border:1px solid rgba(148,163,184,.5);background:#020617;color:#f8fafc;font-size:1rem}.short-answer:focus{outline:2px solid #fb923c}
+.nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.btn{border:none;border-radius:999px;padding:10px 17px;cursor:pointer;font-weight:900}.btn.primary{background:linear-gradient(135deg,#fb923c,#f97316);color:#0f172a}.btn.ghost{background:transparent;color:#f8fafc;border:1px solid rgba(148,163,184,.55)}.btn:disabled{opacity:.4;cursor:not-allowed}.btn:hover:not(:disabled){transform:translateY(-1px)}
+.score{font-size:1.6rem;color:#fdba74;font-weight:900;margin:8px 0}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.fallo{background:#1e293b;border:1px solid rgba(148,163,184,.25);padding:13px;margin:10px 0;border-radius:16px}.perfect{font-size:1.1rem;color:#bbf7d0;font-weight:900}
+@media(max-width:720px){.mode-grid{grid-template-columns:1fr}.nav-row{flex-direction:column-reverse}.btn{width:100%}.topbar{flex-direction:column;align-items:stretch}.progress-label{text-align:left}}
