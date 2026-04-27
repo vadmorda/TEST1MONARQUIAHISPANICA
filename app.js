@@ -1,4 +1,8 @@
 // app.js — Monarquía Hispánica · 2º ESO
+// Funciona con index.html incluido en este paquete.
+
+document.addEventListener('DOMContentLoaded', () => {
+
 
 const IMG = {
   carlosI: {
