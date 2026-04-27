@@ -1,63 +1,65 @@
-body{
-  font-family: system-ui;
-  background:#0f172a;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monarquía Hispánica · Práctica interactiva</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section id="home" class="card">
+      <div class="eyebrow">2º ESO · Geografía e Historia</div>
+      <h1>Monarquía Hispánica</h1>
+      <p class="lead">Carlos I, Felipe II y la política interior: revueltas, centralización y religión.</p>
 
-.app{
-  width:600px;
-  background:#1e293b;
-  padding:20px;
-  border-radius:15px;
-}
+      <div class="mode-grid">
+        <button class="mode-card" data-mode="full" type="button">
+          <span class="mode-icon">📚</span>
+          <strong>Práctica completa</strong>
+          <small>Todas las preguntas.</small>
+        </button>
+        <button class="mode-card" data-mode="review" type="button">
+          <span class="mode-icon">🧠</span>
+          <strong>Repaso inteligente</strong>
+          <small>Repite solo los fallos guardados.</small>
+        </button>
+        <button class="mode-card" data-mode="quick" type="button">
+          <span class="mode-icon">⚡</span>
+          <strong>Reto rápido</strong>
+          <small>5 preguntas al azar.</small>
+        </button>
+      </div>
 
-h1{text-align:center}
-.subtitle{text-align:center;color:#94a3b8}
+      <div class="teacher-note">
+        <strong>Consejo:</strong> haz primero la práctica completa. Después usa el repaso inteligente para consolidar los errores.
+      </div>
+    </section>
 
-.option{
-  background:#334155;
-  margin:8px 0;
-  padding:10px;
-  border-radius:10px;
-  cursor:pointer;
-}
+    <section id="quiz" class="card hidden">
+      <div class="topbar">
+        <button id="btn-home" class="btn ghost" type="button">← Menú</button>
+        <div id="mode-label" class="pill"></div>
+      </div>
 
-.option:hover{background:#475569}
+      <div class="progress-wrap">
+        <div class="progress-bg"><div id="progress-bar" class="progress-fill"></div></div>
+        <div id="progress-label" class="progress-label"></div>
+      </div>
 
-input{width:100%;padding:10px;margin-top:10px}
+      <div id="question-container"></div>
 
-.controls{
-  display:flex;
-  justify-content:space-between;
-  margin-top:15px;
-}
+      <div class="nav-row">
+        <button id="btn-prev" class="btn ghost" type="button">◀ Anterior</button>
+        <button id="btn-next" class="btn primary" type="button">Siguiente ▶</button>
+      </div>
+    </section>
 
-button{
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
+    <section id="results" class="card hidden">
+      <div id="result-content"></div>
+    </section>
+  </main>
 
-.hidden{display:none}
-.option.selected {
-  background: #f97316;
-  color: #0f172a;
-  font-weight: bold;
-}
-
-.progress {
-  color: #94a3b8;
-  font-size: 0.9rem;
-}
-
-.fallo {
-  background: #334155;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 10px;
-}
+  <script src="app.js" defer></script>
+</body>
+</html>
